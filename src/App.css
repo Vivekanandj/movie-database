@@ -1,0 +1,653 @@
+/* App.css - translucent UI with readable text over background image */
+
+/* reset / box sizing */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Variables for easy tuning */
+:root{
+  /* background panel colors (dark translucent so text can be light) */
+  --panel-bg: rgba(10, 12, 18, 0.45);       /* main translucent panel (dark) */
+  --panel-weak-bg: rgba(10, 12, 18, 0.32);  /* slightly lighter */
+  --panel-border: rgba(255,255,255,0.08);
+  --panel-strong-bg: rgba(255,255,255,0.06); /* for small white tints (cards inside panels) */
+
+  --text-light: #f8fafc;   /* main readable text on panels */
+  --muted-light: rgba(255,255,255,0.85);
+  --input-bg: rgba(255,255,255,0.06);
+}
+
+/* BODY - full-screen background image that covers and stays fixed */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+
+  /* full background image that covers the entire viewport and stays fixed */
+  background-image: url("https://t3.ftcdn.net/jpg/15/30/17/40/240_F_1530174068_fQ37Shr5UmtwsIDDW6KXUlhdM6QxorQ6.jpg");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+
+  color: var(--text-light);
+  min-height: 100vh;
+  padding: 20px 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* container */
+.app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  background: transparent; /* ensure background is visible */
+}
+
+/* Loading / error */
+.loading {
+  text-align: center;
+  padding: 60px;
+  font-size: 20px;
+  color: var(--text-light);
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border-radius: 20px;
+  margin: 40px;
+}
+
+.error-banner {
+  background: linear-gradient(135deg, rgba(255,107,107,0.95), rgba(238,90,111,0.95));
+  color: white;
+  padding: 18px 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  font-weight: 600;
+}
+
+/* Header - translucent so background shows through */
+.header { 
+  text-align: center; 
+  margin-bottom: 32px; 
+  background-image: url("https://t3.ftcdn.net/jpg/09/67/67/58/240_F_967675881_jaSQ7pOJxC5TLnl77hgZ4BJGxMwgf4Lq.jpg"); 
+  background-size: cover; background-position: center;
+  backdrop-filter: blur(8px) saturate(120%); 
+  -webkit-backdrop-filter: blur(8px) saturate(120%); 
+  color: var(--text-on-panel); padding: 40px 30px; 
+  border-radius: 24px; 
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12); 
+  border: 1px solid var(--panel-border); 
+}
+
+/* header title (keeps clipped image but with readable outline) */
+.header h1 {
+  background-image: url("https://images.pexels.com/photos/7234413/pexels-photo-7234413.jpeg?auto=compress&cs=tinysrgb&w=800");
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 2px rgba(255,255,255,0.9); /* outline for readability */
+
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -1px;
+}
+
+/* header subtitle */
+.header p {
+  color: var(--muted-light);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* Controls card - translucent */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 28px;
+  padding: 24px;
+
+  background: linear-gradient(180deg, var(--panel-weak-bg), rgba(10,12,18,0.40));
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  align-items: flex-end;
+  border: 1px solid var(--panel-border);
+  color: var(--text-light);
+}
+
+/* Filters & inputs */
+.filter-group {
+  flex: 1;
+  min-width: 220px;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted-light);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  font-size: 14px;
+  transition: all 0.25s ease;
+  background: var(--input-bg);
+  color: var(--text-light);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.filter-input::placeholder { color: white; }
+
+.filter-input:focus {
+  outline: none;
+  border-color: rgba(102,126,234,0.9);
+  box-shadow: 0 0 0 6px rgba(102,126,234,0.06);
+  transform: translateY(-2px);
+}
+
+/* Genre filter button */
+.genre-filter-button {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  background: var(--input-bg);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-light);
+}
+
+.genre-filter-button:hover {
+  border-color: rgba(102,126,234,0.9);
+  box-shadow: 0 0 0 6px rgba(102,126,234,0.04);
+  transform: translateY(-2px);
+}
+
+.filter-icon { font-size: 16px; color: rgba(255,255,255,0.9); }
+
+/* selected genres row */
+.selected-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.genre-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, rgba(102,126,234,0.95), rgba(118,75,162,0.95));
+  color: white;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  animation: chipSlide 0.28s ease;
+}
+
+@keyframes chipSlide { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+
+.chip-remove {
+  background: rgba(255,255,255,0.14);
+  border: none;
+  color: white;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.chip-remove:hover { transform: scale(1.05); }
+
+/* Genre panel */
+.genre-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 28px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--panel-border);
+  color: var(--text-light);
+}
+
+.genre-panel-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+.genre-panel-header h3 { color: var(--text-light); font-size:18px; font-weight:700; }
+
+/* genre grid items - keep them lighter so checkboxes are clear */
+.genre-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+
+.genre-checkbox-label {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.06); /* translucent light surface */
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  color: var(--text-light);
+}
+
+.genre-checkbox-label:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  border-color: rgba(102,126,234,0.12);
+  background: rgba(255,255,255,0.08);
+}
+
+.genre-checkbox { width: 20px; height: 20px; margin-right: 12px; cursor: pointer; accent-color: #667eea; }
+.genre-text { font-size: 14px; font-weight: 600; color: var(--text-light); }
+
+/* Add button stays visible */
+.add-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(6, 95, 70, 0.35);
+  transition: all 0.25s ease;
+}
+
+/* Table container - translucent with blurred backdrop so rows readable */
+.table-container {
+  background: linear-gradient(180deg, rgba(10,12,18,0.30), rgba(10,12,18,0.36));
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+}
+
+/* Table styles */
+.movies-table { width: 100%; border-collapse: collapse; table-layout: auto; }
+
+.movies-table th {
+  background: linear-gradient(90deg, rgba(102,126,234,0.18), rgba(118,75,162,0.18));
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.movies-table tbody tr {
+  transition: all 0.25s ease;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  background: transparent;
+}
+
+.movies-table tbody tr:hover {
+  background: rgba(255,255,255,0.02);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.44);
+}
+
+/* Crucial: make table cell text very readable (light) */
+.movies-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color: var(--text-light);
+  vertical-align: middle;
+}
+
+/* Make specific cells clear and consistent */
+.title-cell { font-weight: 700; color: var(--text-light); max-width: 240px; word-break: break-word; }
+.cast-cell, .genres-cell { font-size: 13px; color: rgba(255,255,255,0.86); max-width: 220px; }
+
+/* Thumbnail cell visuals */
+.thumbnail-cell { width: 80px; }
+.movie-thumbnail {
+  width: 60px; height: 82px; object-fit: cover; border-radius: 8px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.6);
+  transition: transform .2s ease;
+}
+.movie-thumbnail:hover { transform: scale(1.06); }
+
+/* Buttons in table */
+.edit-btn, .delete-btn {
+  padding: 8px 12px; border-radius: 10px; border: none; font-size: 13px;
+  margin-right: 8px; cursor: pointer; color: white; font-weight: 700;
+  transition: all 0.2s ease;
+}
+.edit-btn { background: linear-gradient(135deg,#3b82f6,#2563eb); box-shadow: 0 6px 20px rgba(37,99,235,0.25); }
+.delete-btn { background: linear-gradient(135deg,#ef4444,#dc2626); box-shadow: 0 6px 20px rgba(220,38,38,0.25); }
+
+/* ---------------------------
+   START: MODAL / ADD MOVIE CHANGES
+   (Only this section changed — rest is unchanged)
+   --------------------------- */
+
+/* Modal overlay and improved modal layout */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 20px;
+}
+
+/* Larger, centered modal for Add Movie form */
+.modal {
+  background: linear-gradient(180deg, rgba(12,14,18,0.92), rgba(12,14,18,0.88));
+  color: var(--text-light);
+  border-radius: 16px;
+  padding: 26px;
+  max-width: 900px;    /* wider modal so genres have space */
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Modal title */
+.modal h2 {
+  margin-bottom: 18px;
+  color: var(--text-light);
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* Grid layout for form: inputs + genre area */
+.modal-form {
+  display: grid;
+  grid-template-columns: 1fr 360px; /* left column for inputs, right column for preview/actions */
+  gap: 18px 28px;
+  align-items: start;
+}
+
+/* Responsive: stack on smaller screens */
+@media (max-width: 880px) {
+  .modal-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Form groups: keep inputs full width */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Label style */
+.form-group label {
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Inputs inside modal: full width, comfortable size */
+.modal .form-group input,
+.modal .form-group textarea,
+.modal .form-group select {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.03);
+  color: var(--text-light);
+  font-size: 14px;
+  width: 100%;
+}
+
+/* Smaller width for year input when side-by-side in narrower form */
+.modal .form-group input[type="number"] {
+  width: 140px;
+}
+
+/* focus states */
+.modal .form-group input:focus,
+.modal .form-group textarea:focus,
+.modal .form-group select:focus {
+  outline: none;
+  box-shadow: 0 8px 30px rgba(102,126,234,0.06);
+  transform: translateY(-2px);
+  border-color: rgba(102,126,234,0.9);
+}
+
+/* ------ Improved genre pills ------ */
+
+/* grid wrapper (keeps same location: spans full width) */
+.modal-genre-grid {
+  grid-column: 1 / -1; /* span full width */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+  align-items: start;
+}
+
+/* each pill acts like a toggle button */
+.modal-genre-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 999px;                 /* pill shape */
+  background: rgba(255,255,255,0.03);   /* subtle */
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--text-light);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  user-select: none;
+  min-height: 44px;                     /* clickable comfortable size */
+  align-items: center;
+}
+
+/* visually hide the default input but keep it for a11y */
+.modal-genre-pill input[type="checkbox"] {
+  position: absolute !important;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+/* small check circle on the left */
+.modal-genre-pill .pill-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: background .12s ease, transform .12s ease;
+}
+
+/* label text wraps if needed */
+.modal-genre-pill .pill-label {
+  display: inline-block;
+  white-space: normal;
+  line-height: 1.1;
+}
+
+/* hover state */
+.modal-genre-pill:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+  background: rgba(255,255,255,0.06);
+}
+
+/* selected state: gradient background, white text, check icon visible */
+.modal-genre-pill.selected {
+  background: linear-gradient(135deg, rgba(102,126,234,0.16), rgba(118,75,162,0.14));
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgba(37,99,235,0.12);
+  border-color: rgba(102,126,234,0.12);
+}
+.modal-genre-pill.selected .pill-check {
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  border: none;
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(37,99,235,0.18);
+}
+
+/* checkmark SVG styling (kept small) */
+.modal-genre-pill .pill-check svg {
+  width: 12px;
+  height: 12px;
+  fill: white;
+}
+
+/* focus visible for keyboard users */
+.modal-genre-pill:focus {
+  outline: 3px solid rgba(102,126,234,0.12);
+  outline-offset: 3px;
+}
+
+/* responsive: smaller pills on very narrow screens */
+@media (max-width: 420px) {
+  .modal-genre-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+  .modal-genre-pill { padding: 8px 10px; min-height: 40px; }
+  .modal-genre-pill .pill-check { width: 18px; height: 18px; }
+}
+
+/* Thumbnail preview + right column content */
+/* We'll use the right column to show preview and actions */
+.modal-right {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+/* thumbnail input group */
+.thumbnail-preview {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
+
+.preview-img {
+  width: 110px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.06);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+
+/* link/text next to preview */
+.preview-fallback {
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+}
+
+/* Modal actions (buttons) placed in right column and also span on mobile */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+  align-items: center;
+  width: 100%;
+}
+
+/* Buttons: fuller feeling for modal */
+.save-btn, .cancel-btn {
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  transition: transform .12s ease, box-shadow .12s ease;
+  font-size: 14px;
+}
+
+/* primary green */
+.save-btn {
+  background: linear-gradient(135deg,#10b981,#059669);
+  color: white;
+  box-shadow: 0 10px 30px rgba(6,95,70,0.24);
+}
+
+/* neutral */
+.cancel-btn {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-light);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* hover */
+.save-btn:hover, .cancel-btn:hover { transform: translateY(-4px); }
+
+/* make buttons full width on very small screens */
+@media (max-width: 420px) {
+  .modal-actions { flex-direction: column; }
+  .save-btn, .cancel-btn { width: 100%; }
+}
+
+/* Small accessibility focus */
+.modal-genre-checkbox:focus-within { outline: 3px solid rgba(102,126,234,0.08); outline-offset: 3px; }
+
+/* ---------------------------
+   END: MODAL / ADD MOVIE CHANGES
+   (Only this section changed — rest is unchanged)
+   --------------------------- */
+
+/* Fallback for browsers not supporting backdrop-filter: increase panel opacity for legibility */
+@supports not ((-webkit-backdrop-filter: blur(6px)) or (backdrop-filter: blur(6px))) {
+  :root {
+    --panel-bg: rgba(6,8,10,0.62);
+    --panel-weak-bg: rgba(6,8,10,0.56);
+  }
+  .modal { background: rgba(10,12,18,0.96); }
+  .filter-input, .genre-filter-button, .genre-checkbox-label { background: rgba(255,255,255,0.02); }
+}
